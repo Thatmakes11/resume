@@ -2,4 +2,9 @@
 /avatar full.png
 /main.*
 /main.synctex.gz
+<<<<<<< HEAD
 /.vscode
+=======
+/.vscode
+/.history
+>>>>>>> 05042e8 (Update .gitignore and refine LaTeX document fonts formatting)
