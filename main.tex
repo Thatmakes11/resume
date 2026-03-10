@@ -70,20 +70,21 @@
 \section{项目与工程经历}
 
 \noindent
-\textbf{基于 GRPO 强化学习的多模态 GUI Agent 推理增强} \hfill 个人项目
+\textbf{基于 GRPO 强化学习的多模态 GUI Agent 推理增强}
 \begin{itemize}
-    \item \textbf{多粒度数据构建与动态筛选:} 整合 OS-Atlas 等开源数据集，收集横跨多终端（Windows, Mac, Android, Web）的 14M Low Level 与 30K High Level 指令数据。利用 MLLM 实施 10 轮 Zero-Shot 启发式过滤，剔除极端难度（全对或全错）样本，最终按照难度均衡原则重采样构建 3K 规模的高质量训练集
-    \item \textbf{GRPO 强化学习训练:} 针对 GUI Agent 的逻辑推理需求，基于 MLLM 引入 GRPO 算法进行 RL 微调。设计 Few-shot Prompt 引导模型显式输出思考过程，并严格规范化结构化输出（Action, Click Point, Input Text）
-    \item \textbf{复合奖励函数设计与评估:} 构建基于任务执行的四种奖励：(1) 严格校验输出格式是否符合要求；(2) 预设 Action 类别精准匹配；(3) 空间坐标约束（计算点距阈值或 Bounding Box 包含关系）；(4) 生成文本与 GT 的 F1 Score 阈值评估。最终强化学习模型的准确率在各项 GUI benchmark 中均显著优于预训练及 SFT Baseline
+    \item \textbf{数据构建与筛选:} 整合 OS-Atlas 等开源 GUI agent 数据集，收集横跨 Windows、Mac、Android 与 Web 的 14M Low Level 与 30K High Level 指令数据。通过 MLLM 实施 10 轮 Zero-Shot 启发式过滤，剔除极端难度样本并进行难度均衡采样，最终构建约 3K 高质量 RL 训练集
+    \item \textbf{RLHF 训练:} 基于 GRPO 算法对 Qwen2.5-VL-3B-Instruct 进行强化学习微调，引导模型生成显式推理过程，并规范结构化输出（Action、Click Point、Input Text）。训练在 8xRTX4090 上完成，总训练时间约 2 天
+    \item \textbf{奖励函数设计:} 设计任务执行驱动的复合奖励，包括：(1) 输出格式校验，(2) Action 类别匹配，(3) 空间坐标约束（点距或 Bounding Box），(4) 文本生成 F1 Score 评估，在 GUI benchmark 上的任务成功率较 SFT baseline 高 8\%
 \end{itemize}
 
 \vspace{0.3em}
 \noindent
-\textbf{多模态大模型 Prefilling 阶段视觉 Token 动态压缩} \hfill 个人项目
+\textbf{多模态大模型 Prefill 阶段视觉 Token 动态压缩}
 \begin{itemize}
-    \item \textbf{特征融合与动态剪枝:} 针对长视觉序列推理延迟问题，在指令序列尾部引入 Learnable Token，于 Decoder 中后期提取其与视觉 Token 的注意力权重作为先验重要性分数。随后以视觉编码器提取的多尺度特征为条件，构建 Conditioned Self-Attention 模块（在 $Q, K$ 矩阵上拼接视觉特征）对先验分数进行二次提炼，经多头平均计算最终重要性得分，实现自适应剪枝
-    \item \textbf{低成本的参数高效训练:} 冻结大模型主干网络，仅训练新增的 Token 及 Attention 层，大幅降低训练开销。训练阶段除语言建模（LM）损失外，引入 Bounding Box 区域内的 Mask 作为重要性分数的监督信号，并结合 DICE、BCE Loss 与 L1 正则化进行联合优化，提升剪枝掩码的准确度
-    \item \textbf{推理策略与工程评估:} 推理阶段采用 Top-K 掩码机制，固定保留得分最高的前 1/9 视觉 Token，以保障 9x 的固定压缩率。在 Visual CoT Benchmark 测试中，仅使用少量样本（20K）微调后，平均性能较 Baseline 损耗低于 10\%
+    \item \textbf{视觉 Token 重要性建模:} 在指令序列尾部引入 Learnable Token，并在 Decoder 中后期提取其与视觉 Token 的注意力权重作为先验重要性分数
+    \item \textbf{条件注意力重评分:} 结合视觉编码器提取的多尺度特征，在 $Q,K$ 矩阵中拼接视觉特征构建 Conditioned Self-Attention 模块，对先验重要性进行二次建模并计算最终 Token importance score
+    \item \textbf{参数高效训练:} 冻结 Qwen2.5-VL-3B-Instruct 主干网络，仅训练新增 Token 与 Attention 层。利用 Bounding Box 区域 Mask 作为监督信号，并结合 DICE、BCE 与 L1 Loss 进行联合优化
+    \item \textbf{推理优化:} 推理阶段采用 Top-K 策略保留 1/9 视觉 Token，实现约 9× Token 压缩。在 Visual CoT Benchmark 上仅使用 20K 样本微调（训练在 4×RTX4090 上完成，总训练时间约 2 小时）后性能损耗低于 10\%
 \end{itemize}
 
 % ==================== 科研与学术成果 ====================
@@ -91,9 +92,9 @@
 \noindent
 \textbf{Streamlined Open-Vocabulary Human-Object Interaction Detection (CVPR 2026)} 第一作者
 \begin{itemize}
-    \item 提出一种基于 DINOv3 架构 VLM 的开放词汇人物交互检测统一框架
-    \item 将视觉编码器按层级解耦：利用浅层特征执行细粒度空间定位，利用深层特征进行高级动作语义与交互关系理解
-    \item 设计 Query Token 连接浅层与深层网络，提升多模态语义对齐质量的同时，减少 Decode 次数提升模型前向速度
+    \item 提出基于 DINOv3 架构 VLM 的开放词汇人物交互检测统一框架
+    \item 将视觉编码器按层级解耦：浅层特征负责细粒度空间定位，深层特征建模高层语义与交互关系
+    \item 设计 Query Token 连接浅层与深层网络，提升多模态语义对齐质量，同时减少 Decode 前向次数以提升模型效率
 \end{itemize}
 
 \vspace{0.3em}
@@ -102,7 +103,7 @@
 \begin{itemize}
     \item 提出一种 VLM (BLIP-2) 与 DETR 目标检测模型双向协作的开放词汇 HOI 检测架构
     \item 将检测模型提取的 Attention Map 注入 VLM 的注意力计算中，引导 VLM 聚焦于与任务相关的细粒度视觉区域
-    \item 构建 Detection 与 Next-Token Prediction 协同训练，通过端到端梯度反向传播，提升了模型的多模态对齐质量
+    \item 构建 Detection 与 Next-Token Prediction 协同训练，通过端到端梯度反向传播，提升模型的多模态对齐质量
 \end{itemize}
 
 % ==================== 荣誉与奖项 ====================
