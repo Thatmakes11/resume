@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{xeCJK}
-\usepackage[margin=0.6in]{geometry}
+\usepackage[hmargin=0.6in, vmargin=0.4in]{geometry}
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{titlesec}
@@ -41,7 +41,7 @@
 % ==================== 个人信息 ====================
 \begin{minipage}[c]{0.78\textwidth}
     {\huge \textbf{孙畅 (Sun Chang)}} \\[0.5em]
-    (+86)191-2060-5396 ~|~ \href{mailto:sun.flow@foxmail.com}{sun.flow@foxmail.com}
+    (+86)191-2060-5396 ~|~ \href{mailto:sun.flow@foxmail.com}{sun.flow@foxmail.com} ~|~ 可立即到岗
 \end{minipage}
 \begin{minipage}[c]{0.2\textwidth}
     \raggedleft
@@ -58,43 +58,18 @@
 \noindent
 \textbf{华南理工大学} | 物理与光电学院 | 应用物理学（前 5\%） | 学士 \hfill 2020.09—2024.06
 
-% ==================== 专业技能 ====================
-\section{专业技能}
-\begin{itemize}
-    \item 精通 Python 及 PyTorch 框架，掌握 Transformers, LLaMA Factory, EasyR1 等主流大模型训练与高效微调工具
-    \item \textbf{大模型架构与对齐:} 深入理解 Transformer 与 ViT 核心机制，熟悉 LLaVA, Qwen-VL 等多模态大模型架构；熟悉大模型后训练流程，掌握 SFT 数据构造逻辑，深入理解 DPO, GRPO 等 RLHF 算法及 LoRA 等 PEFT 方案
-    \item \textbf{Token 压缩与推理加速:} 掌握基于 Token 剪枝与合并的计算冗余剔除策略，能有效降低长序列 Prefilling 时延；深入理解 GQA、MLA 注意力机制、RoPE 位置编码原理及 KV-Cache 显存管理与优化机制
-\end{itemize}
-
-% ==================== 项目与工程经历 ====================
-\section{项目与工程经历}
-
-\noindent
-\textbf{基于 GRPO 强化学习的多模态 GUI Agent 推理增强}
-\begin{itemize}
-    \item \textbf{数据构建与筛选:} 整合 OS-Atlas 等开源 GUI agent 数据集，收集横跨 Windows、Mac、Android 与 Web 的 14M Low Level 与 30K High Level 指令数据。通过 MLLM 实施 10 轮 Zero-Shot 启发式过滤，剔除极端难度样本并进行难度均衡采样，最终构建约 3K 高质量 RL 训练集
-    \item \textbf{RLHF 训练:} 基于 GRPO 算法对 Qwen2.5-VL-3B-Instruct 进行强化学习微调，引导模型生成显式推理过程，并规范结构化输出（Action、Click Point、Input Text）。训练在 8xRTX4090 上完成，总训练时间约 2 天
-    \item \textbf{奖励函数设计:} 设计任务执行驱动的复合奖励，包括：(1) 输出格式校验，(2) Action 类别匹配，(3) 空间坐标约束（点距或 Bounding Box），(4) 文本生成 F1 Score 评估，在 GUI benchmark 上的任务成功率较 SFT baseline 高 8\%
-\end{itemize}
-
-\vspace{0.3em}
-\noindent
-\textbf{多模态大模型 Prefill 阶段视觉 Token 动态压缩}
-\begin{itemize}
-    \item \textbf{视觉 Token 重要性建模:} 在指令序列尾部引入 Learnable Token，并在 Decoder 中后期提取其与视觉 Token 的注意力权重作为先验重要性分数
-    \item \textbf{条件注意力重评分:} 结合视觉编码器提取的多尺度特征，在 $Q,K$ 矩阵中拼接视觉特征构建 Conditioned Self-Attention 模块，对先验重要性进行二次建模并计算最终 Token importance score
-    \item \textbf{参数高效训练:} 冻结 Qwen2.5-VL-3B-Instruct 主干网络，仅训练新增 Token 与 Attention 层。利用 Bounding Box 区域 Mask 作为监督信号，并结合 DICE、BCE 与 L1 Loss 进行联合优化
-    \item \textbf{推理优化:} 推理阶段采用 Top-K 策略保留 1/9 视觉 Token，实现约 9× Token 压缩。在 Visual CoT Benchmark 上仅使用 20K 样本微调（训练在 4×RTX4090 上完成，总训练时间约 2 小时）后性能损耗低于 10\%
-\end{itemize}
-
 % ==================== 科研与学术成果 ====================
 \section{科研经历与学术成果}
 \noindent
 \textbf{Streamlined Open-Vocabulary Human-Object Interaction Detection (CVPR 2026)} 第一作者
 \begin{itemize}
-    \item 提出基于 DINOv3 架构 VLM 的开放词汇人物交互检测统一框架
-    \item 将视觉编码器按层级解耦：浅层特征负责细粒度空间定位，深层特征建模高层语义与交互关系
-    \item 设计 Query Token 连接浅层与深层网络，提升多模态语义对齐质量，同时减少 Decode 前向次数以提升模型效率
+    \item \textbf{核心架构:} 提出一种基于 Frozen DINO.txt VLM 的双分支开放词汇 HOI 检测框架，通过解耦“交互定位”与“语义对齐”流程，在保持极低训练开销的同时显著提升了长尾/未知类别的识别能力
+    \item \textbf{二阶段交互查询提纯 (Two-step Query Refinement):} 
+        \begin{itemize}[label=\tiny$\bullet$, leftmargin=1.5em, itemsep=0.1em]
+            \item \textbf{语义增强:} 将初始交互 Query 与图像 Token 送入 Vision Head，提取深层上下文特征得到语义增强 Query
+            \item \textbf{特征重关注:} 设计轻量化 Cross-Attention 模块，驱动增强 Query 重新检索图像特征空间，生成高保真嵌入
+        \end{itemize}
+    \item \textbf{性能平衡:} 该设计利用 Frozen Backbone 的强泛化性，仅通过少量可学习参数即可实现高质量的多模态语义对齐，解决了当前在 Open-Vocabulary 场景下计算冗余与过拟合的痛点，\textbf{性能在所有测试集上均优于现有 SOTA 方法}
 \end{itemize}
 
 \vspace{0.3em}
@@ -102,14 +77,49 @@
 \textbf{Bilateral Collaboration with Large Vision-Language Models for Open Vocabulary Human-Object Interaction Detection (ICCV 2025)} 第三作者
 \begin{itemize}
     \item 提出一种 VLM (BLIP-2) 与 DETR 目标检测模型双向协作的开放词汇 HOI 检测架构
-    \item 将检测模型提取的 Attention Map 注入 VLM 的注意力计算中，引导 VLM 聚焦于与任务相关的细粒度视觉区域
-    \item 构建 Detection 与 Next-Token Prediction 协同训练，通过端到端梯度反向传播，提升模型的多模态对齐质量
+    \item 将检测模型 Cross Attention 提取的 Attention Map 经过 resize 注入 VLM 的视觉编码器的 \texttt{[CLS]} token 的注意力计算中，引导 VLM 聚焦于与任务相关的细粒度视觉区域。再将来自 VLM 的语义增强特征注入检测模型中进一步做特征融合，利用 VLM 的能力提升检测模型的语义对齐质量
+    \item 构建 Detection 与 Next-Token Prediction 协同训练，通过端到端梯度的反向传播，提升模型的多模态对齐质量
+\end{itemize}
+
+% ==================== 项目与工程经历 ====================
+\section{项目与工程经历}
+
+\noindent
+\textbf{多模态大模型 Prefill 阶段视觉 Token 动态压缩} \hfill 2025.12 --- 2026.04
+\begin{itemize}
+    % \item \textbf{视觉 Token 重要性建模:} 在指令序列尾部引入 Learnable Token，并在 Decoder 中后期提取其与视觉 Token 的注意力权重作为先验重要性分数
+    % \item \textbf{条件注意力重评分:} 结合视觉编码器提取的多尺度特征，在 $Q,K$ 矩阵中拼接视觉特征构建 Conditioned Self-Attention 模块，对先验重要性进行二次建模并计算最终 Token importance score
+    \item \textbf{条件注意力重评分:} 在指令序列尾部注入 Learnable Token 提取先验重要性，并创新性地将多尺度视觉特征拼接入 $Q,K$ 矩阵构建 Conditioned Self-Attention。利用 BBox 区域 Mask 作为监督信号，结合 DICE+BCE+L1 联合 Loss，实现了对高优视觉 Token 的精准二次评分与保留
+    % \item \textbf{参数高效训练:} 冻结 Qwen2.5-VL-3B-Instruct 主干网络，仅训练新增 Token 与 Attention 层。利用 Bounding Box 区域 Mask 作为监督信号，并结合 DICE、BCE 与 L1 Loss 进行联合优化
+    % \item \textbf{推理优化:} 推理阶段采用 Top-K 策略保留 1/9 视觉 Token，实现约 9× Token 压缩。在 Visual CoT Benchmark 上仅使用 20K 样本微调（训练在 4×RTX4090 上完成，总训练时间约 2 小时）后性能损耗低于 10\%
+    \item \textbf{高效的效率产出:} 方案具备极高的参数效率，冻结主干网络后，在 4×RTX4090 上仅需 20K 样本、耗时 2 小时即完成微调。在推理端采用 Top-K 策略实现\textbf{高达 9 倍的视觉 Token 压缩率（仅保留 1/9）}，且在 Visual CoT Benchmark 上性能损耗控制在 10\% 以内，大幅释放了部署显存压力
+\end{itemize}
+
+\vspace{0.3em}
+\noindent
+\textbf{基于强化学习的多模态 GUI Agent 推理增强} \hfill 2025.11 --- 2026.02
+\begin{itemize}
+    % \item \textbf{数据构建与筛选:} 整合 OS-Atlas 等开源 GUI agent 数据集，收集横跨 Windows、Mac、Android 与 Web 的 310K Low Level 与 30K High Level 指令数据。通过 MLLM 实施 10 轮 Zero-Shot 启发式过滤，剔除极端难度样本并进行难度均衡采样，最终构建约 3K 高质量 RL 训练集
+    \item \textbf{数据构建与筛选:} 整合 OS-Atlas 等开源 GUI agent 数据集，收集多终端、多粒度的指令数据。通过 MLLM 实施 10 轮 Zero-Shot 启发式过滤，剔除极端难度样本并进行难度均衡采样，极大缓解了强化学习初期的冷启动
+    % \item \textbf{RLHF 训练:} 基于 GRPO 算法对 Qwen2.5-VL-3B-Instruct 进行强化学习微调，引导模型生成显式推理过程，并规范结构化输出（Action、Click Point、Input Text）。训练在 8xRTX4090 上完成，总训练时间约 2 天
+    \item \textbf{纯强化学习探索:} 摒弃传统 SFT 阶段，直接利用 Qwen2.5-VL-3B-Instruct 的内生基础能力，基于 GRPO 算法进行纯强化学习微调。通过强制引导模型生成显式推理过程 (CoT) 并规范结构化输出
+    % \item \textbf{奖励函数设计:} 设计任务执行驱动的复合奖励，包括：(1) 输出格式校验，(2) Action 类别匹配，(3) 空间坐标约束（点距或 Bounding Box），(4) 文本生成 F1 Score 评估，在 GUI benchmark 上的任务成功率较 SFT baseline 高 8\%
+    \item \textbf{复合奖励设计与产出:} 设计了任务执行驱动的多维奖励体系，成功验证了\textbf{纯强化学习范式} 在多模态 GUI Agent 任务上的可行性，在主流 GUI Benchmark 上，提升 14\% 绝对成功率
+\end{itemize}
+
+% ==================== 专业技能 ====================
+\section{专业技能}
+\begin{itemize}
+    \item 精通 Python 及 PyTorch 框架，掌握 Transformers, LLaMA Factory, EasyR1 等主流大模型训练与高效微调工具
+    \item \textbf{大模型架构与对齐:} 深入理解 Transformer 与 ViT 核心机制，熟悉 LLaVA, Qwen-VL 等多模态大模型架构；熟悉大模型后训练流程，掌握 SFT 数据构造逻辑，深入理解 DPO, GRPO 等 RLHF 算法及 LoRA 等 PEFT 方案
+    \item \textbf{Token 压缩与推理加速:} 掌握基于 Token 剪枝与合并的计算冗余剔除策略，能有效降低长序列 Prefilling 时延；深入理解 GQA、MLA 注意力机制、RoPE 位置编码原理及 KV-Cache 显存管理与优化机制
+    \item 学习能力强，有较好的科研素养与文献阅读能力，能快速理解并复现前沿论文中的算法细节与创新点
 \end{itemize}
 
 % ==================== 荣誉与奖项 ====================
 \section{奖项}
 \begin{itemize}
-    \item 国家奖学金、学校奖学金
+    \item 国家奖学金、学校奖学金、CET-6 (571)
 \end{itemize}
 
 \end{document}
