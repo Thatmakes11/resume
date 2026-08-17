@@ -73,6 +73,7 @@
     \noindent\textbf{#1}\hfill{\small\color{muted}#2}\par
 }
 \newcommand{\entrygap}{\vspace{0.25em}}
+\newcommand{\expgap}{\vspace{0.55em}}
 
 % Hide page numbers and remove paragraph indentation.
 \pagestyle{empty}
@@ -102,7 +103,7 @@
     \profilephoto
 \end{minipage}
 
-\vspace{-0.55em}
+\vspace{-0.15em}
 
 % Skills
 \section{Skills}
@@ -113,15 +114,13 @@
     SFT · GRPO/DAPO · Reward Design · LoRA · Visual Token Pruning/Merging · Conditional Attention · Prefill · KV-Cache
     \item \textbf{Agent:}
     Harness (State/Tool/Skill/Memory/Trace/Eval) · Agentic SFT/RL (Trajectory/Rubrics/Reward) · Gene Self-Evolution · Review Gate
-    \item \textbf{Content Understanding \& Risk Detection:}
-    Multimodal Semantics · Risk Taxonomy · Long-tail Mining · Hard-example Mining · Offline Evaluation
 \end{itemize}
 
 % Experience
 \section{Exps}
 
 \resumeentry
-    {Streamlined Open-Vocabulary Human-Object Interaction Detection}
+    {\href{https://arxiv.org/abs/2603.27500}{Streamlined Open-Vocabulary Human-Object Interaction Detection}}
     {CVPR 2026 · 第一作者 · Open-Vocabulary HOI Detection}
 \begin{itemize}
     \item 提出双分支开放词汇 HOI 检测框架，解耦\textbf{交互定位}与\textbf{语义对齐}，利用 Frozen Vision-Language Backbone 的泛化能力降低训练开销与已见类别过拟合。
@@ -129,26 +128,26 @@
     \item 在全部测试集上超过已有 SOTA 方法，并在参数效率、开放词汇泛化与检测性能之间取得更优平衡。
 \end{itemize}
 
-\entrygap
+\expgap
 \resumeentry
-    {Bilateral Collaboration with Large Vision-Language Models for Open Vocabulary Human-Object Interaction Detection}
+    {\href{https://arxiv.org/abs/2507.06510}{Bilateral Collaboration with Large Vision-Language Models for Open Vocabulary Human-Object Interaction Detection}}
     {ICCV 2025 · 第三作者 · Open-Vocabulary HOI Detection}
 \begin{itemize}
     \item 提出 BLIP-2 与 DETR 双向协作架构：将检测器 Cross-Attention Map 注入 VLM 视觉编码器，引导其聚焦任务相关的细粒度区域。
     \item 将 VLM 的语义增强特征回注检测器，并联合优化 Detection 与 Next-Token Prediction，实现端到端的视觉定位与语义对齐。
 \end{itemize}
 
-\entrygap
+\expgap
 \resumeentry
     {抖音 · 内容理解算法实习}
     {短视频评论审核 · 理解 $\rightarrow$ 研判 · Agent Harness · Gene Self-Evolution · Agentic SFT/RL}
 \begin{itemize}
     \item 面向短视频评论审核，将链路拆分为\textbf{理解}与\textbf{研判}：理解层结合视频语境识别评论意图、对象与风险证据，研判层依据审核规则形成风险结论，关注误伤、漏放与复杂语境下的一致性。
     \item 搭建可观测的 Agent Harness，统一 State、Tool、Skill、Trace 与 Eval；围绕优质/失败轨迹沉淀可复用 Gene，并通过评测反馈完成 Gene 的生成、筛选与迭代。
-    \item 建设评论测试集并采集 Agent 执行轨迹，生成面向审核规则与推理质量的 Rubrics；结合 Agentic SFT/RL 与 Reward Design，构建训练、离线评测和回归分析闭环。
+    \item 建设评论测试集并采集 Agent 执行轨迹，生成面向审核规则与推理质量的 Rubrics；以 Precision、Recall、F1 及误伤/漏放为核心优化指标，结合风险标签与难例切片、Agentic SFT/RL 和 Reward Design 推动离线审核效果提升。
 \end{itemize}
 
-\entrygap
+\expgap
 \datedentry{多模态大模型 Prefill 阶段视觉 Token 动态压缩}{2025.12--2026.04}
 \begin{itemize}
     \item 在指令末尾注入 Learnable Token 提取先验重要性，并将多尺度视觉特征拼接到 $Q,K$ 构建 Conditioned Self-Attention；以 BBox Mask 和 DICE+BCE+L1 Loss 监督视觉 Token 重评分。
@@ -165,9 +164,9 @@
     {Agent Loop｜提升 Agent 能力}
     {我更关注 Agent 如何从“偶尔做对”走向“稳定完成任务”}
 \begin{itemize}
-    \item 模型决定能力上限，Harness 决定能力能否被可靠调用。我会优先让任务状态、工具调用、执行轨迹和评测结果可见，因为看得见失败，才知道下一轮该改模型、数据还是流程。
+    \item \textbf{Harness 是随模型能力变化的脚手架：}
+    当模型能力尚未覆盖业务时，对 Harness 做加法，把人对业务的理解编码为 State、Tool、Skill、Rule、Eval 与 Review Gate；当模型迭代、能力升级时，对 Harness 做减法，移除不再必要的流程和约束，在保留可观测性与安全边界的同时释放模型能力。
     \item Coding Agent 与 Business Agent 应保持边界：前者对实现、测试和 Artifact 负责，后者对语境、规则与验收负责。好的协作不是让一个 Agent 知道一切，而是让不同责任可以被检查。
-    \item 我把 Skill 与 Gene 看作 Agent 的经验载体：成功轨迹沉淀方法，失败轨迹形成反例和回归集。Agent 的成长不只是更长的 Prompt，而是能从反馈中留下可复用的经验。
 \end{itemize}
 
 \entrygap
