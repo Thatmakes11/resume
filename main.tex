@@ -54,11 +54,11 @@
     [\color{black}\titlerule\vspace{0.2em}]
 \titlespacing*{\section}{0pt}{1.1ex plus 0.5ex minus 0.2ex}{0.65ex}
 
-% Use dense lists while preserving enough whitespace for a two-page resume.
+% Use dense lists while preserving enough whitespace for a one-page resume.
 \setlist[itemize]{
     leftmargin=1.35em,
-    itemsep=0.25em,
-    topsep=0.2em,
+    itemsep=0.12em,
+    topsep=0.12em,
     parsep=0pt,
     partopsep=0pt,
     before=\small
@@ -72,7 +72,7 @@
 \newcommand{\datedentry}[2]{%
     \noindent\textbf{#1}\hfill{\small\color{muted}#2}\par
 }
-\newcommand{\entrygap}{\vspace{0.35em}}
+\newcommand{\entrygap}{\vspace{0.25em}}
 
 % Hide page numbers and remove paragraph indentation.
 \pagestyle{empty}
@@ -89,8 +89,6 @@
         (+86) 191-2060-5396
         \enspace|\enspace
         \href{mailto:sun.flow@foxmail.com}{sun.flow@foxmail.com}
-        \enspace|\enspace
-        可立即到岗
     }\\[0.35em]
     {\small
         \textbf{华南理工大学}
@@ -111,13 +109,12 @@
 \begin{itemize}
     \item \textbf{Research \& Multimodal CV:}
     Paper Reading · Reproduction · Open-Vocabulary Detection · HOI Detection · VLM/DETR · Cross-Attention
-    \item \textbf{LLM \& Agent:}
-    SFT · DPO/GRPO · RLHF · Reward Design · LoRA/PEFT · Agent Harness\\
-    Tool · Skill · Memory · Trace · Eval · Review Gate
+    \item \textbf{LLM \& Token Compression:}
+    SFT · GRPO/DAPO · Reward Design · LoRA · Visual Token Pruning/Merging · Conditional Attention · Prefill · KV-Cache
+    \item \textbf{Agent:}
+    Harness (State/Tool/Skill/Memory/Trace/Eval) · Agentic SFT/RL (Trajectory/Rubrics/Reward) · Gene Self-Evolution · Review Gate
     \item \textbf{Content Understanding \& Risk Detection:}
     Multimodal Semantics · Risk Taxonomy · Long-tail Mining · Hard-example Mining · Offline Evaluation
-    \item \textbf{Token Compression \& Inference:}
-    Visual Token Pruning/Merging · Conditional Attention · Prefill · GQA/MLA · RoPE · KV-Cache
 \end{itemize}
 
 % Experience
@@ -144,18 +141,18 @@
 \entrygap
 \resumeentry
     {抖音 · 内容理解算法实习}
-    {内容理解与风险识别 · Agent Harness · SFT/RL}
+    {短视频评论审核 · 理解 $\rightarrow$ 研判 · Agent Harness · Gene Self-Evolution · Agentic SFT/RL}
 \begin{itemize}
-    \item 面向短视频内容理解与风险识别场景，参与多模态语义建模、风险标签组织、长尾样本挖掘与难例分析，关注识别效果、误伤/漏放和线上成本之间的平衡。
-    \item 将业务任务组织为可观测的 Agent Harness，明确 State、Tool、Skill、Trace 与 Eval 的接口，通过执行轨迹和失败案例定位数据、模型及流程问题。
-    \item 探索 SFT 与 RL 驱动的模型迭代方法，围绕样本筛选、Reward Design、离线评测与回归集构建训练—评测闭环。
+    \item 面向短视频评论审核，将链路拆分为\textbf{理解}与\textbf{研判}：理解层结合视频语境识别评论意图、对象与风险证据，研判层依据审核规则形成风险结论，关注误伤、漏放与复杂语境下的一致性。
+    \item 搭建可观测的 Agent Harness，统一 State、Tool、Skill、Trace 与 Eval；围绕优质/失败轨迹沉淀可复用 Gene，并通过评测反馈完成 Gene 的生成、筛选与迭代。
+    \item 建设评论测试集并采集 Agent 执行轨迹，生成面向审核规则与推理质量的 Rubrics；结合 Agentic SFT/RL 与 Reward Design，构建训练、离线评测和回归分析闭环。
 \end{itemize}
 
 \entrygap
 \datedentry{多模态大模型 Prefill 阶段视觉 Token 动态压缩}{2025.12--2026.04}
 \begin{itemize}
     \item 在指令末尾注入 Learnable Token 提取先验重要性，并将多尺度视觉特征拼接到 $Q,K$ 构建 Conditioned Self-Attention；以 BBox Mask 和 DICE+BCE+L1 Loss 监督视觉 Token 重评分。
-    \item 冻结 Qwen2.5-VL-3B-Instruct 主干，仅训练新增模块；使用 20K 样本在 4$\times$RTX4090 上约 2 小时完成训练，实现\textbf{视觉 Token 9$\times$ 压缩（仅保留 1/9）}，Visual CoT Benchmark 性能损失低于 10\%。
+    \item 冻结 Qwen3-VL 主干，仅训练新增模块；使用 20K 样本在 4$\times$RTX4090 上约 2 小时完成训练，实现\textbf{视觉 Token 9$\times$ 压缩（仅保留 1/9）}，Visual CoT Benchmark 性能损失低于 10\%。
 \end{itemize}
 
 % TODO: Add selected developer tools and multimodal agent projects with demos and measurable outcomes.
@@ -166,29 +163,26 @@
 \section{Loops}
 \resumeentry
     {Agent Loop｜提升 Agent 能力}
-    {将模型能力转化为稳定、可验证、可持续迭代的系统能力}
+    {我更关注 Agent 如何从“偶尔做对”走向“稳定完成任务”}
 \begin{itemize}
-    \item \textbf{Harness over Model:}
-    以 State、Tool、Skill、Memory、Trace、Eval 和 Review Gate 约束执行，将一次性生成转化为可观测、可复现的闭环。
-    \item \textbf{Coding Agent / Business Agent Separation:}
-    Coding Agent 负责实现、测试与 Artifact；Business Agent 负责业务语义、策略约束与验收标准，双方通过显式 Contract 协作。
-    \item \textbf{Skill Evolution:}
-    Create $\rightarrow$ Test $\rightarrow$ Trace $\rightarrow$ Refine；将失败样本沉淀为回归集，让 Skill 可组合、可验证、可版本化。
+    \item 模型决定能力上限，Harness 决定能力能否被可靠调用。我会优先让任务状态、工具调用、执行轨迹和评测结果可见，因为看得见失败，才知道下一轮该改模型、数据还是流程。
+    \item Coding Agent 与 Business Agent 应保持边界：前者对实现、测试和 Artifact 负责，后者对语境、规则与验收负责。好的协作不是让一个 Agent 知道一切，而是让不同责任可以被检查。
+    \item 我把 Skill 与 Gene 看作 Agent 的经验载体：成功轨迹沉淀方法，失败轨迹形成反例和回归集。Agent 的成长不只是更长的 Prompt，而是能从反馈中留下可复用的经验。
 \end{itemize}
 
 \entrygap
 \resumeentry
     {My Loop｜提升自身能力}
-    {借助 Agent 放大认知与行动，同时保留人的问题定义、判断和审美}
+    {AI 提高了答案的供给，而人的优势更集中在问题、判断、体验与责任}
 \begin{itemize}
-    \item \textbf{Learning:}
-    Problem Framing $\rightarrow$ Paper Reading $\rightarrow$ Reproduction $\rightarrow$ Reflection $\rightarrow$ Methodology。
-    \item \textbf{Visual Thinking:}
-    Humans Are Visual Animals；用 Diagram、Prototype 与 Dashboard 外化抽象关系，缩短理解和反馈路径。
-    \item \textbf{Taste:}
-    通过高质量 Reference、Rubric 与对比选择校准审美；Agent 扩大搜索空间，人负责方向、取舍与最终质量。
-    \item \textbf{Human Loop via Agent Loop:}
-    让 Agent 接管检索、实现、验证与复盘中的重复劳动，把人的注意力提升到问题建模、关键判断与方法论沉淀。
+    \item \textbf{提出值得回答的问题：}
+    当生成答案越来越便宜，真正稀缺的是发现什么值得做、为谁做，以及什么约束不能被忽略。我希望自己持续深入真实场景，而不是只在已有问题上优化答案。
+    \item \textbf{形成 Taste 与承担判断：}
+    Agent 可以扩展候选空间，但无法替我承担取舍的后果。我的价值在于结合上下文、长期目标与审美，判断什么是“技术上可行但不值得”，什么是“不完美但方向正确”。
+    \item \textbf{保留人的感知与体验：}
+    Humans Are Visual Animals。观察、同理心和对现实细节的感受，是我理解用户与问题的 Grounding；Diagram 与 Prototype 则帮助我把直觉外化，与 Agent 和他人共同检验。
+    \item \textbf{用 Agent 放大而非替代思考：}
+    我愿意把检索、实现和验证中的重复劳动交给 Agent，把时间留给问题建模、关键实验和复盘；最终目标不是更依赖 Agent，而是借助每次协作形成更好的判断与方法。
 \end{itemize}
 
 \end{document}
